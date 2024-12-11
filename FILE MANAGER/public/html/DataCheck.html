@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4-Column Grid Layout (Excel-like)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+            gap: 1px; /* gap between cells to create grid lines */
+            background-color: #ccc; /* grid line color */
+        }
+
+        .grid-item {
+            background-color: white;
+            border: 1px solid #ddd; /* cell border */
+            padding: 10px;
+            text-align: left;
+            font-size: 16px;
+            height: 50px; /* fixed height for rows */
+            display: flex;
+            align-items: center; /* vertical centering */
+            justify-content: center; /* horizontal centering */
+        }
+
+        /* Optional styling for header cells */
+        .grid-item.header {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Responsive layout for smaller screens */
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr; /* single column on small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Client Details</h1>
+    <div id="MainGrid" class="grid-container">
+        <div id="Client Number" class="grid-item header">Client Number</div>
+        <div id="Name" class="grid-item header">Name</div>
+        <div id="Email" class="grid-item header">Email</div>
+        <div id="Contact" class="grid-item header">Contact</div>
+        
+        <!-- <div class="grid-item">Row 1, Col 1</div>
+        <div class="grid-item">Row 1, Col 2</div>
+        <div class="grid-item">Row 1, Col 3</div>
+        <div class="grid-item">Row 1, Col 4</div> -->
+    </div>
+    <script src="/javascripts/DataCheck.js"></script>
+</body>
+</html>
+

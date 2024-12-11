@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Martel+Sans:wght@600&family=Poppins:wght@300;400;700&display=swap');
+*{
+    padding: 0;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+}
+body{
+    background-color: black;
+}
+.main{
+    background-image: url("Assets/Images/Index.jpg");
+    background-position: center center;
+    background-size: max(1200px,100vw);
+    height: 70vh;
+    position: relative;
+}
+.main .box{
+    height: 70vh;
+    width: 100%;
+    opacity: 0.7;
+    position: absolute;
+    top: 0;
+    background-color: black;
+}
+
+nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 80vw;
+    margin: auto;
+    height: 100px;
+}
+
+nav img{
+    color: red;
+    width: 130px;
+    position: relative;
+    z-index: 10;
+}
+
+nav button{
+    position: relative;
+    z-index: 10;
+}
+
+.hero{
+    height: calc(100% - 100px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+    position: relative;
+    z-index: 10;
+    font-family: 'Martel Sans', sans-serif;
+    gap: 23px;
+    padding: 0 30px;
+    text-align: center;
+}
+.hero > :first-child{
+    text-align: center;
+    font-weight: 900;
+    font-size: 48px;
+}
+.hero > :nth-child(2){
+    text-align: center;
+    font-weight: 400;
+    font-size: 24px;
+}
+.hero > :nth-child(3){
+    text-align: center;
+    font-weight: 400;
+    font-size: 20px;
+}
+.seperation{
+    position: relative;
+    z-index: 20;
+    height: 7px;
+    background-color: darkgrey;
+}
+
+.btn{
+    padding: 3px 8px;
+    font-weight: 400;
+    background-color: rgba(248, 243, 243, 0.042);
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid white;
+}
+.hero-buttons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+.btn-red {
+    background-color: rgb(229, 9, 20);
+    color: white;
+    padding: 3px 24px;
+    font-size: 20px;
+    border-radius: 4px;
+}
+
+.btn-red-sm{
+    padding: 3px 12px;
+    background-color: rgb(229, 9, 20);
+    color: white;
+}
+
+.main input{
+    color: white;
+    padding: 7px 100px 8px 14px;
+    font-weight: 700;
+    font-size: 12px;
+    border-radius: 4px;
+    background-color: rgba(23, 23, 23, 0.7);
+    border: 1px solid white;
+}
+
+
+
+.first{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    max-width: 70vw;
+    color: white;
+    /* flex-wrap: wrap; */
+}
+
+@media screen and (max-width : 1090px) {
+    .first{
+        flex-wrap: wrap ;
+    }
+    .hero > :first-child{
+        text-align: center;
+        font-weight: 900;
+        font-size: 32px;
+    }
+    .hero > :nth-child(2){
+        text-align: center;
+        font-weight: 400;
+        font-size: 18px;
+    }
+    .hero > :nth-child(3){
+        text-align: center;
+        font-weight: 400;
+        font-size: 18px;
+    }
+    nav{
+        max-width: 90vw;
+    }
+    .hero-buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+    }
+    .FAQ h2 {
+        text-align: center;
+        font-size: 32px;
+    }
+}
+
+.secImg{
+    position: relative;
+}
+
+.secImg img{
+    width: 555px;  
+    position: relative;
+    z-index: 10;
+}
+
+.secImg video{
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 100%;
+}
+
+@media screen and (max-width : 1000px) {
+    .secImg img{
+        width: 300px;  
+        position: relative;
+        z-index: 10;
+    }
+}
+
+section.first > div {
+    display: flex;
+    flex-direction: column;
+    padding: 34px 0;
+}
+
+.first > div :first-child{
+    font-size: 48px;
+    font-weight: bolder;
+}
+
+.first > div :nth-child(2){
+    font-size: 24px;
+    font-weight: bolder;
+}
+.FAQ{
+    background-color: black;
+    color: white;
+    padding: 34px;
+    font-size: 24px;
+}
+.FAQ h2{
+    text-align: center;
+    font-size: 48px;
+}
+.faqbox:hover{
+    background-color: #414141;
+}
+.faqbox{
+    transition: all 0.5s ease-out;
+    margin-top: 34px;
+    justify-content: space-between;
+    display: flex;
+    background-color: rgb(45, 45, 45);
+    padding: 24px;
+    width: 60vw;
+    margin: 20px auto;
+    cursor: pointer;
+}
+
+.FAQ svg{
+    filter: invert(1);
+}
+footer{
+    color: white;
+    max-width: 60vw;
+    margin: auto;
+    padding: 14px;
+}
+
+footer div{
+    padding: 10px 0;
+    color: rgba(255, 255, 255, 0.7);
+}
+.footer{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.footer a {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.footer-item{
+    display: flex;
+    flex-direction: column;
+    max-width: 60vw;
+    margin: auto;
+    gap: 23px;
+}
+@media screen and (max-width:550px) {
+    .footer{
+        max-width: 90vw;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        color: white;
+        gap: 55px;
+    }
+    footer-item{
+        align-items: center;
+    }
+}
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <nav>
+            <span><img src="Assets/Images/logo.svg" alt="" srcset=""></span>
+            <div>
+                <button class="btn">English</button>
+                <button class="btn-red-sm">Sign In</button>
+            </div>
+        </nav>
+        <div class="box"></div>
+        <div class="hero">
+            <span>Unlimited movies, TV shows, and more</span>
+            <span>Watch anywhere. Cancel anytime.</span>
+            <span>Ready to watch? Enter your email to create or restart your membership.</span>
+            <div class="hero-buttons">
+                <input type="text" placeholder="Email Address">
+                <button class="btn btn-red">Get Started ></button>
+            </div>
+        </div>
+
+        <div class="seperation"></div>
+    </div>
+
+    <!-- Sections -->
+
+    <section class="first">
+        <div>
+            <span>Enjoy on your TV</span>
+            <span>Watch on smart TVs, PlayStation, Xbox, Chromecast, Apple TV, Blu-ray players and more.</span>
+        </div>
+        <div class="secImg">
+            <img src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/tv.png" alt="">
+            <video muted autoplay
+                src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/video-tv-0819.m4v"></video>
+        </div>
+    </section>
+
+
+    <div class="seperation"></div>
+
+    <section class="first second">
+        <div class="secImg">
+            <img src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/mobile-0819.jpg" alt="">
+        </div>
+        <div>
+            <span>Download your shows to watch offline</span>
+            <span>Save your favorites easily and always have something to watch.</span>
+        </div>
+    </section>
+
+    <div class="seperation"></div>
+
+    <section class="first third">
+        <div>
+            <span>Watch everywhere</span>
+            <span>Stream unlimited movies and TV shows on your phone, tablet, laptop, and TV.</span>
+        </div>
+        <div class="secImg">
+            <img src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/tv.png" alt="">
+            <video src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/video-devices-in.m4v"
+                autoplay loop muted></video>
+        </div>
+    </section>
+
+    <div class="seperation"></div>
+
+    <section class="first second">
+        <div class="secImg">
+            <img src="https://occ-0-1917-64.1.nflxso.net/dnm/api/v6/19OhWN2dO19C9txTON9tvTFtefw/AAAABejKYujIIDQciqmGJJ8BtXkYKKTi5jiqexltvN1YmvXYIfX8B9CYwooUSIzOKneblRFthZAFsYLMgKMyNfeHwk16DmEkpIIcb6A3.png?r=f55"
+                alt="">
+        </div>
+        <div>
+            <span>Create profiles for kids</span>
+            <span>Send kids on adventures with their favorite characters in a space made just for them—free with your
+                membership.</span>
+        </div>
+    </section>
+
+    <div class="seperation"></div>
+
+    <!-- FAQ boxes -->
+
+    <section class="FAQ">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faqbox">
+            <span>What is Netflix</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 4V20" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M4 12H20" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </div>
+        <div class="faqbox">
+            <span>How much does Netflix cost?</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 4V20" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M4 12H20" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </div>
+        <div class="faqbox">
+            <span>Where can I watch?</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 4V20" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M4 12H20" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </div>
+        <div class="faqbox">
+            <span>How do I cancel?</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 4V20" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M4 12H20" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </div>
+        <div class="faqbox">
+            <span>What can I watch on Netflix?</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 4V20" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M4 12H20" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </div>
+        <div class="faqbox">
+            <span>Is Netflix good for kids?</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 4V20" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M4 12H20" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </div>
+    </section>
+
+    <div class="seperation"></div>
+
+    <!-- CONTACT US -->
+
+    <footer>
+        <div>Questions? Contact us.</div>
+        <div class="footer">
+            <div class="footer-item">
+
+                <a href="faq">FAQ</a>
+                <a href="faq">Investor Relationsl</a>
+                <a href="faq">FAQ</a>
+                <a href="faq">FAQ</a>
+            </div>
+            <div class="footer-item">
+                <a href="faq">FAQ</a>
+                <a href="faq">Investor Relationsl</a>
+                <a href="faq">FAQ</a>
+                <a href="faq">FAQ</a>
+            </div>
+            <div class="footer-item">
+                <a href="faq">FAQ</a>
+                <a href="faq">Investor Relationsl</a>
+                <a href="faq">FAQ</a>
+                <a href="faq">FAQ</a>
+            </div>
+            <div class="footer-item">
+                <a href="faq">FAQ</a>
+                <a href="faq">Investor Relationsl</a>
+                <a href="faq">FAQ</a>
+                <a href="faq">FAQ</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
