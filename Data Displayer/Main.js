@@ -9,6 +9,7 @@ app.use(express.static("public"));
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(express.static(path.join(__dirname,"public")))
+app.use(express.json());
 
 
 app.get('/',(req,res)=>{
@@ -49,14 +50,13 @@ app.get('/delete/:id',async (req,res)=>{
     res.redirect("/read")
 })
 
-app.get('/edit/:id',async (req,res)=>{
-    let id = req.params.id
+app.post('/edit',async (req,res)=>{
+    const { id } = req.body;
     if (mongoose.Types.ObjectId.isValid(id)) {
         let user = await usermodel.findOne({_id : id})
-        res.sendFile(path.join(__dirname, 'public', '/HTML/edit.html'),{user});
-    }
+        res.json({user})
+    } 
+})  
 
-}) 
-
- 
-app.listen(3000)
+  
+app.listen(3000)  

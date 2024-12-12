@@ -1,4 +1,4 @@
-window.onload = async function(){
+window.onload = async function(event){
     let dataCards = ""
     let data = await fetch('/read-data')
     let UserData = await data.json()
@@ -13,7 +13,7 @@ window.onload = async function(){
                         <h3 class="text-xl mt-3 tracking-tighter">${element.name}</h3>
                         <h5 class="text-zinc-500">${element.email}</h5>
                         <div class="flex gap-3 mt-10">
-                            <a class="text-zinc-200" href="/edit/${element._id}">Edit User</a>
+                            <a class="text-zinc-200" href="./HTML/edit.html" name="${element._id}">Edit User</a>
                             <a class="text-red-500" href="/delete/${element._id}">Delete User</a>
                         </div>
                         </div>`
@@ -21,4 +21,7 @@ window.onload = async function(){
             
     }
     document.getElementById("userCards").innerHTML = dataCards
+    window.onclick= function(event){
+        localStorage.setItem("ID",event.target.name) 
+    }
 }
