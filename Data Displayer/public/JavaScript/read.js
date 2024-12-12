@@ -2,7 +2,6 @@ window.onload = async function(event){
     let dataCards = ""
     let data = await fetch('/read-data')
     let UserData = await data.json()
-    console.log(UserData.users)  
     for (const key in UserData.users) {
             const element = UserData.users[key];
             if (element.imageurl != "") {

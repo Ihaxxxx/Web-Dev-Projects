@@ -50,7 +50,7 @@ app.get('/delete/:id',async (req,res)=>{
     res.redirect("/read")
 })
 
-app.post('/edit',async (req,res)=>{
+app.post('/search-data',async (req,res)=>{
     const { id } = req.body;
     if (mongoose.Types.ObjectId.isValid(id)) {
         let user = await usermodel.findOne({_id : id})
@@ -58,5 +58,12 @@ app.post('/edit',async (req,res)=>{
     } 
 })  
 
+app.post('/edit-user/:id',async (req,res)=>{
+    const { id } = req.params;
+    const { name, email, imageurl } = req.body;
+    console.log(id,name,email)
+    let user = await usermodel.findOneAndUpdate({_id : id},{imageurl,name,email},{new:true})
+    res.redirect("/read")
+})  
   
 app.listen(3000)  
