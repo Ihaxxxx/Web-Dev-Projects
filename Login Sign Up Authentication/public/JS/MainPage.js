@@ -39,7 +39,8 @@ LoginForm.addEventListener('submit',async (event)=>{
         errordisplaylogin.classList.remove("hidden");
     }else{
         errordisplaylogin.innerHTML = "Success"
-        errordisplaylogin.classList.remove("hidden");
+        errordisplaylogin.classList.remove("hidden","bg-red-900");
+        errordisplaylogin.classList.add("bg-green-700");
     }
 })
 
@@ -61,6 +62,7 @@ signupForm.addEventListener('submit', async (event)=>{
         errordisplaysignup.classList.remove("hidden");
     }else{
         errordisplaysignup.innerHTML = "Success"
-        errordisplaysignup.classList.remove("hidden bg-red-900");
+        errordisplaysignup.classList.remove("hidden","bg-red-900");
+        errordisplaysignup.classList.add("bg-green-700");
     }
   })
