@@ -53,8 +53,7 @@ app.post('/login',async(req,res)=>{
             res.status(200).redirect("/profile")
         }
         else res.redirect("/login")    
-    })
-    
+    })   
 })
 
 app.get('/logout',(req,res)=>{
@@ -113,4 +112,4 @@ function isLoggedin(req,res,next) {
 }
 
 
-app.listen(3000)
+app.listen(5000)

@@ -1,0 +1,43 @@
+<!-- Navbar.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Navbar -->
+  <nav class="bg-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <!-- Logo -->
+        <div class="flex-shrink-0 flex items-center">
+          <a href="/" class="text-2xl font-bold text-purple-600">Poly Book</a>
+        </div>
+
+        <!-- Navbar Links -->
+        <div class="md:flex space-x-8 items-center">
+          <a href="/homepage" class="text-gray-700 hover:text-purple-500">Home</a>
+          <a href="/profile" class="text-gray-700 hover:text-purple-500">Profile</a>
+          <a href="/people" class="text-gray-700 hover:text-purple-500">People</a>
+          <a href="/friends" class="text-gray-700 hover:text-purple-500">Friends</a>
+          <a href="/friendsRequest" class="text-gray-700 hover:text-purple-500">Friends Request</a>
+        </div>
+
+        <!-- Buttons -->
+        <div class="md:flex items-center space-x-4">
+          <a href="/logout"
+            class="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600">Log Out</a>
+        </div>
+    </div>
+    </nav>
+    <main>
+      <h3 class="text-center mt-10">Welcome Back</h3>
+
+    </main>
+    <script src="/JS/homepage.js"></script>
+</body>
+</html>
