@@ -5,10 +5,13 @@ window.onload = async () => {
         // Fetch people data
         const response = await fetch("/peopleData");
         const { people, MainID } = await response.json();
+        console.log(people, MainID);
         let usersContainer = "";
 
         // Build the user cards
         people.forEach(user => {
+            isFriend = MainID.friends.includes(user._id);
+            if (isFriend) return;
             const isPending = MainID.pendingRequest.includes(user._id);
             usersContainer += `
                 <div class="bg-white w-1/3 h-24 flex items-center justify-between p-6">

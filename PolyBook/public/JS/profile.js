@@ -19,6 +19,7 @@ form.addEventListener("submit", async (event) => {
 
 window.onload = async () => {
   fetchPosts()
+  fetchFriends()
 }
 
 async function fetchPosts() {
@@ -56,4 +57,22 @@ async function fetchPosts() {
   }
   let postContainer = document.getElementById("post-container");
   postContainer.innerHTML = postContainerData;
+}
+async function fetchFriends() {
+  let data = await fetch("/friendsData");
+  let response = await data.json();
+  let usersContainer =''
+  response.people.forEach((PeopleData) => {
+    if (PeopleData.friends.includes(response.MainID._id)){
+      usersContainer += `                        <div id="${PeopleData._id}" class=" w-1/2 h-25 flex items-center bg-gray-100 rounded-lg justify-center p-6 gap-4">
+                            <img src="${PeopleData.profileImage}" class="w-10 h-10 rounded-lg"  alt="">
+                            <div class="flex items-center gap-4">
+                                <p class="text-blue-700">${PeopleData.username}</p>
+                                <p>${PeopleData.age}</p>
+                            </div>    
+                        </div>`
+    }
+  })
+  document.getElementById("friendsContainer").innerHTML = usersContainer;
+
 }

@@ -92,12 +92,29 @@ app.get('/friendsRequestData', isLoggedin, async (req, res) => {
 });
 
 app.get('/peopleData', isLoggedin, async (req, res) => {
-  console.log(req.user.userid)
   let MainID  = await userModel.findOne({ email: req.user.email })
   let people = await userModel.find({ _id: { $ne: req.user.userid } });
   res.json({ MainID:MainID ,people:people })
-})  
+}) 
 
+app.post('/acceptFriendReq', isLoggedin, async (req, res) => {
+  console.log(req.body)
+  // Main User
+  await userModel.findOneAndUpdate({ _id: req.user.userid }, { $push: {friends: req.body.friendID } })
+  await userModel.findOneAndUpdate({email: req.user.email}, { $pull: {receivedRequest: req.body.friendID } })
+  // Friend User
+  await userModel.findOneAndUpdate({ _id: req.body.friendID}, { $push: {friends: req.user.userid } })
+  await userModel.findOneAndUpdate({ _id: req.body.friendID}, { $pull: {pendingRequest: req.user.userid } })
+})
+app.post('/rejectReq', isLoggedin, async (req, res) => {
+
+})
+
+app.get('/friendsData', isLoggedin, async (req, res) => {
+  let MainID  = await userModel.findOne({ email: req.user.email }).populate("friends");
+  let people = await userModel.find({ _id: { $ne: req.user.userid } });
+  res.json({ MainID:MainID, people:people })
+})
 
 app.post('/PostData', isLoggedin, async (req, res) => {
   console.log(req.body)
