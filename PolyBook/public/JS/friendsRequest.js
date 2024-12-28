@@ -2,29 +2,34 @@ window.onload = async () => {
     let data = await fetch("/friendsRequestData");
     let usersContainer = "";
     let response = await data.json();
-    response.MainID.receivedRequest.forEach(User => {
-        console.log(response.people, User)
-        console.log(response.people[0]._id === User)
+    response.MainID.receivedRequest.forEach(MainUser => {
+        // console.log(response.people, MainUser)
+        // console.log(response.people[0]._id === MainUser)
 
-        response.people.forEach(user => {
-            console.log(user)
-            if (user._id === User ) {
+        if(response.MainID.receivedRequest.length > 0){
+            friendTab = document.getElementById("FriendTab");
+            friendTab.classList.remove("text-gray-700");
+            friendTab.classList.add("text-red-700");
+        }
+        response.people.forEach(People => {
+            console.log(People)
+            if (People._id === MainUser && !(People.friends.includes(response.MainID._id))) {
                 usersContainer += `
                 <div class="bg-white w-1/3 h-24 flex items-center justify-between p-6">
                     <div class="flex items-center">
-                        <img class="w-16 h-16 rounded-lg mr-10" src="${user.profileImage || 'defaultImage.jpg'}" alt="User Profile Image">
+                        <img class="w-16 h-16 rounded-lg mr-10" src="${People.profileImage || 'defaultImage.jpg'}" alt="User Profile Image">
                         <div>
-                            <p class="text-blue-700">${user.username || 'Unknown User'}</p>
-                            <p>${user.age || 'N/A'}</p>
+                            <p class="text-blue-700">${People.username || 'Unknown User'}</p>
+                            <p>${People.age || 'N/A'}</p>
                         </div>
                     </div>
                     <div class="flex items-center felx-col gap-2">
-                        <button id="${user._id}" class="AcceptReq">
+                        <a id="${People._id}" class="AcceptReq">
                             Add Friend
-                        </button>
-                        <button class="text-red-800 RejectReq" id="${user._id}">
+                        </a>
+                        <a class="text-red-800 RejectReq" id="${People._id}">
                             Reject
-                        </button>
+                        </a>
                     </div>
                 </div>
             `
@@ -52,7 +57,25 @@ function addEventListeners() {
                 body: JSON.stringify({ friendID }),
             });
             const addResult = await addResponse.json();
-            window.location.href = "/friends";
+            if(addResult){
+                window.location.href = "/friendsRequest";
+            }
+        })
+    });
+    rejectButtons.forEach(button => {
+        button.addEventListener("click", async (event) => {
+            const friendID = event.target.id;
+            const addResponse = await fetch("/rejectReq", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ friendID }),
+            });
+            const addResult = await addResponse.json();
+            if(addResult){
+                window.location.href = "/friendsRequest";
+            }
         })
     });
 };

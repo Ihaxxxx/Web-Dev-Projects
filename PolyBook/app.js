@@ -46,8 +46,9 @@ app.get("/profile", isLoggedin, async (req, res) => {
 });
 
 app.get("/userposts", isLoggedin, async (req, res) => {
-  let user = await userModel.findOne({ email: req.user.email }).populate("posts");
-  res.json({ user })
+  let MainID = await userModel.findOne({ email: req.user.email }).populate("posts");
+  let people = await userModel.find({ _id: { $ne: req.user.userid } }).populate("posts");
+  res.json({ MainID,people })
 });
 
 
@@ -58,6 +59,10 @@ app.get("/logout", isLoggedin, (req, res) => {
 });
 
 app.get('/like/:id', isLoggedin, async (req, res) => {
+  const postId = req.params.id;
+    if (!postId || !mongoose.Types.ObjectId.isValid(postId)) {
+      return res.status(400).send({ error: 'Invalid or missing post ID' });
+    }
   let post = await postModel.findOne({ _id: req.params.id }).populate("user");
   if (post.likes.indexOf(req.user.userid) === -1) {
     post.likes.push(req.user.userid)
@@ -66,6 +71,28 @@ app.get('/like/:id', isLoggedin, async (req, res) => {
   }
   await post.save()
   res.redirect("/profile")
+});
+
+app.get('/likeByMainUser/:id', isLoggedin, async (req, res) => {
+  let post = await postModel.findOne({ _id: req.params.id }).populate("user");
+  if (post.likes.indexOf(req.user.userid) === -1) {
+    post.likes.push(req.user.userid)
+  } else {
+    post.likes.splice(post.likes.indexOf(req.user.userid), 1)
+  }
+  await post.save()
+  res.redirect("/VisitProfile")
+});
+
+app.get('/likeByMainUserHomePage/:id', isLoggedin, async (req, res) => {
+  let post = await postModel.findOne({ _id: req.params.id }).populate("user");
+  if (post.likes.indexOf(req.user.userid) === -1) {
+    post.likes.push(req.user.userid)
+  } else {
+    post.likes.splice(post.likes.indexOf(req.user.userid), 1)
+  }
+  await post.save()
+  res.redirect("/homepage")
 });
 
 app.get('/edit', isLoggedin, async (req, res) => {
@@ -78,7 +105,7 @@ app.get('/people', isLoggedin, async (req, res) => {
 });
 
 app.get('/friends', isLoggedin, async (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "/HTML/friends.html"));
+  res.sendFile(path.join(__dirname, "public", "/HTML/poeple.html"));
 });
 
 app.get('/friendsRequest', isLoggedin, async (req, res) => {
@@ -97,23 +124,43 @@ app.get('/peopleData', isLoggedin, async (req, res) => {
   res.json({ MainID:MainID ,people:people })
 }) 
 
-app.post('/acceptFriendReq', isLoggedin, async (req, res) => {
-  console.log(req.body)
-  // Main User
-  await userModel.findOneAndUpdate({ _id: req.user.userid }, { $push: {friends: req.body.friendID } })
-  await userModel.findOneAndUpdate({email: req.user.email}, { $pull: {receivedRequest: req.body.friendID } })
-  // Friend User
-  await userModel.findOneAndUpdate({ _id: req.body.friendID}, { $push: {friends: req.user.userid } })
-  await userModel.findOneAndUpdate({ _id: req.body.friendID}, { $pull: {pendingRequest: req.user.userid } })
-})
-app.post('/rejectReq', isLoggedin, async (req, res) => {
-
-})
 
 app.get('/friendsData', isLoggedin, async (req, res) => {
   let MainID  = await userModel.findOne({ email: req.user.email }).populate("friends");
   let people = await userModel.find({ _id: { $ne: req.user.userid } });
   res.json({ MainID:MainID, people:people })
+})
+
+app.get('/VisitProfile', isLoggedin, async (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "/HTML/VisitProfile.html"));
+  
+})
+
+app.post('/VisitProfileData', isLoggedin, async (req, res) => {
+  let user = await userModel.findOne({ _id: req.body.ProfileID }).populate("posts");
+  res.json({ user,mainUserID: req.user.userid })
+})
+
+app.post('/acceptFriendReq', isLoggedin, async (req, res) => {
+  console.log(req.body)
+  // Main User
+  await userModel.findOneAndUpdate({ _id: req.user.userid }, { $push: {friends: req.body.friendID } })
+  await userModel.findOneAndUpdate({email: req.user.email}, { $pull: {receivedRequest: req.body.friendID } })
+  await userModel.findOneAndUpdate({email: req.user.email}, { $pull: {pendingRequest: req.body.friendID } })
+  // Friend User
+  await userModel.findOneAndUpdate({ _id: req.body.friendID}, { $push: {friends: req.user.userid } })
+  await userModel.findOneAndUpdate({ _id: req.body.friendID}, { $pull: {pendingRequest: req.user.userid } })
+  await userModel.findOneAndUpdate({ _id: req.body.friendID}, { $pull: {receivedRequest: req.user.userid } })
+  res.json({ success: true })
+})
+app.post('/rejectReq', isLoggedin, async (req, res) => {
+    // Main User
+    await userModel.findOneAndUpdate({email: req.user.email}, { $pull: {receivedRequest: req.body.friendID } })
+    await userModel.findOneAndUpdate({email: req.user.email}, { $pull: {pendingRequest: req.body.friendID } })
+    // Friend User
+    await userModel.findOneAndUpdate({ _id: req.body.friendID}, { $pull: {pendingRequest: req.user.userid } })
+    await userModel.findOneAndUpdate({ _id: req.body.friendID}, { $pull: {receivedRequest: req.user.userid } })
+    res.json({ success: true })
 })
 
 app.post('/PostData', isLoggedin, async (req, res) => {
@@ -192,16 +239,15 @@ app.post('/addFriend', isLoggedin, async (req, res) => {
   }
 })
 
-app.post('/CancelRequest', isLoggedin, async (req, res) => {
+app.post('/RemoveFriend', isLoggedin, async (req, res) => {
   let user = await userModel.findOne({ email: req.user.email })
-  if (user.pendingRequest.includes(req.body.friendID)) {
+  if (user.friends.includes(req.body.friendID)) {
     console.log("true")
-    let MainUser = await userModel.findOneAndUpdate({ _id: req.user.userid }, { $pull: { pendingRequest: req.body.friendID } })
-    let ReceivedRequestUser = await userModel.findOneAndUpdate({ _id: req.body.friendID }, { $pull: { receivedRequest: req.user.userid } })
+    let MainUser = await userModel.findOneAndUpdate({ _id: req.user.userid }, { $pull: { friends: req.body.friendID } })
+    let ReceivedRequestUser = await userModel.findOneAndUpdate({ _id: req.body.friendID }, { $pull: { friends: req.user.userid } })
     res.json({ success: true , id: req.body.friendID})
   } else {
     res.json({ success: false , id: req.body.friendID})
-    return;
   }
 })
 

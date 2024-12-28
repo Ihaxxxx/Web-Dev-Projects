@@ -7,11 +7,18 @@ window.onload = async () => {
         const { people, MainID } = await response.json();
         console.log(people, MainID);
         let usersContainer = "";
+        if(MainID.receivedRequest.length > 0){
+            friendTab = document.getElementById("FriendTab");
+            friendTab.classList.remove("text-gray-700");
+            friendTab.classList.add("text-red-700");
+        }
 
         // Build the user cards
         people.forEach(user => {
             isFriend = MainID.friends.includes(user._id);
+            receivedRequest = MainID.receivedRequest.includes(user._id);
             if (isFriend) return;
+            if (receivedRequest) return;
             const isPending = MainID.pendingRequest.includes(user._id);
             usersContainer += `
                 <div class="bg-white w-1/3 h-24 flex items-center justify-between p-6">
@@ -76,6 +83,6 @@ window.onload = async () => {
         };
     } catch (error) {
         console.error("Error loading people data:", error);
-        alert("Failed to load data. Please try again later.");
+        document.getElementById("header").innerHTML = "No People Data to Display as you have sent requests to all users";
     }
 };
