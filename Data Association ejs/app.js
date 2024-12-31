@@ -5,21 +5,38 @@ const userModel = require("./usermodel/user")
 const postModel = require("./usermodel/post")
 const app = express()
 const bycrypt = require('bcrypt')
-
-
+const multer = require('multer')
+const crypto = require('crypto');
+const path = require('path')
+const upload = require("./Config/multerConfig")
 
 app.set("view engine","ejs")
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
+app.use(express.static(path.join(__dirname,"public")));
 app.use(cookieParser())
+
+
 
 app.get('/',(req,res)=>{
     res.render('index')
+})
+app.get('/profile/upload',(req,res)=>{
+    console.log(req.user)
+    res.render('ProfileUpload')
+}
+)
+app.post('/upload',isLoggedin,upload.single("image"),async(req,res)=>{
+    let user = await userModel.findOne({email:req.user.email})
+    user.profilepic = req.file.filename
+    await user.save()
+    res.redirect("/profile")
 })
 
 app.get('/login',(req,res)=>{
     res.render('login')
 })
+
 
 app.post('/register',async (req,res)=>{
     let {email,password,username,name,age} = req.body
@@ -112,4 +129,4 @@ function isLoggedin(req,res,next) {
 }
 
 
-app.listen(5000)
+app.listen(3000)
