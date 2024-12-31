@@ -1,0 +1,19 @@
+usermodel
+full name = str
+email = str
+password = str
+cart - array
+isadmin - boolean
+orders - array
+contact - number
+picture - db
+
+
+product
+image
+name
+price
+isdicount
+bg-color
+panelcolor
+txt-color
