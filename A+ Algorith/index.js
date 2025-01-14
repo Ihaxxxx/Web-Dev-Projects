@@ -12,12 +12,12 @@ function removeFromArray(arr, element) {
 // calc guess 
 function heuristic(a, b) {
     // var distance = dist(a.i, a.j, b.i, b.j)
-    var distance = abs(a.i-b.i) + abs(a.j-b.j)
+    var distance = abs(a.i - b.i) + abs(a.j - b.j)
     return distance
 }
 
-let col = 25;
-let row = 25;
+let col = 55;
+let row = 50;
 var grid = new Array(col)
 
 var openSet = []
@@ -28,7 +28,6 @@ var width;
 var height;
 var previous = undefined
 var path = [];
-var noSolution = false
 
 
 function Spot(i, j) {
@@ -42,7 +41,7 @@ function Spot(i, j) {
     this.previous = undefined
     this.wall = false
 
-    if (random(1) < 0.3 ) {
+    if (random(1) < 0.2) {
         this.wall = true
     }
 
@@ -70,6 +69,18 @@ function Spot(i, j) {
         if (j > 0) {
             this.neighbours.push(grid[i][j - 1]);
         }
+        if (i > 0 && j > 0) {
+            this.neighbours.push(grid[i - 1][j - 1])
+        }
+        if (i < col - 1 && j > 0) {
+            this.neighbours.push(grid[i + 1][j - 1])
+        }
+        if (i > 0 && j < row - 1) {
+            this.neighbours.push(grid[i - 1][j + 1])
+        }
+        if (i < col - 1 && j < row - 1) {
+            this.neighbours.push(grid[i + 1][j + 1])
+        }
     }
 }
 
@@ -82,7 +93,6 @@ function setup() {
     for (let i = 0; i < col; i++) {
         grid[i] = new Array(row)
     }
-    console.log(grid)
     // adding spots
     for (let i = 0; i < col; i++) {
         for (let j = 0; j < row; j++) {
@@ -132,28 +142,35 @@ function draw() {
             if (!closedSet.includes(neighboiur) && !neighboiur.wall) {
                 var tempG = current.g + 1
                 // check if this exist in open set to see if tit is a batter G
+                var newPath = false
                 if (openSet.includes(neighboiur)) {
                     // finding the optimal G score
                     if (tempG < neighboiur.g) {
                         neighboiur.g = tempG
+                        newPath = true
                     }
                 } else {
                     neighboiur.g = tempG
+                    newPath = true
                     openSet.push(neighboiur);
                 }
-                // total distance a guess
-                neighboiur.h = heuristic(neighboiur, end)
-                // formula to calculate cost
-                neighboiur.f = neighboiur.g + neighboiur.h
-                neighboiur.previous = current // where thje neighboiur came from 
+
+                if (newPath) {
+                    // total distance a guess
+                    neighboiur.h = heuristic(neighboiur, end)
+                    // formula to calculate cost
+                    neighboiur.f = neighboiur.g + neighboiur.h
+                    neighboiur.previous = current // where thje neighboiur came from 
+                }
+
             }
         }
 
     } else {
-        noSolution = true
         console.log("nos solution")
         // no solution
         noLoop()
+        return
     }
 
 
@@ -174,15 +191,13 @@ function draw() {
     }
 
     // find path
-    if (!noSolution) {
-        path = []
-        var temp = current
-        // run this loop until there is no previous element
-        while (temp.previous) {
-            // pushing the previous paths in a temp variable 
-            path.push(temp.previous);
-            temp = temp.previous
-        }
+    path = []
+    var temp = current
+    // run this loop until there is no previous element
+    while (temp.previous) {
+        // pushing the previous paths in a temp variable 
+        path.push(temp);
+        temp = temp.previous
     }
     // open set position green
     for (let index = 0; index < openSet.length; index++) {
@@ -190,8 +205,7 @@ function draw() {
     }
     // final path drawing  
     for (let index = 0; index < path.length; index++) {
-        // console.log(index)
-        console.log(path[index])
         path[index].show(color(0, 0, 255))
     }
+    // grid[col - 1][row - 1].show(color((0, 0, 255)))
 }
