@@ -66,7 +66,6 @@ class Spot:
      if (self.i < col - 1 and self.j < row - 1):
        self.neighbour.append(grid[self.i+1][self.j+1])
        
-# creating grid
 grid = [[Spot(i, j) for j in range(row)] for i in range(col)]
 
 #  Add neighbour
@@ -74,7 +73,6 @@ for i in range(col):
  for j in range(row):
   grid[i][j].addNeighbour(grid)
 
-# start and end of the grid
 
 start = grid[0][0]
 end = grid[col - 1][row - 1]
@@ -95,7 +93,6 @@ def main():
                 running = False
 
         if open_set:
-            # Find the node with the lowest f score
             current = min(open_set, key=lambda spot: spot.f)
 
             if current == end:
@@ -142,7 +139,6 @@ def main():
         for spot in open_set:
             spot.show(GREEN)
 
-        # Reconstruct path
         path = []
         temp = current
         while temp.previous:
@@ -154,8 +150,6 @@ def main():
 
         pygame.display.flip()
         clock.tick(30)
-
-    # pygame.quit()
 
 if __name__ == "__main__":
     main()
