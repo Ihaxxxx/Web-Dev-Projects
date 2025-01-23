@@ -27,20 +27,61 @@ let sidegrid = [
 
 
 function getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min) ) + min;
+    return Math.floor(Math.random() * (max - min)) + min;
 }
+function removeFromArray(arr, element) {
+    // traversing backwards
+    for (let index = arr.length - 1; index >= 0; index--) {
+        if (arr[index] == element) {
+            arr.splice(index, 1);
+        }
+    }
+}
+
+
+
+
 
 let row = 10
 let col = 10
+let openSet = []
+let closedSet = []
+let startLocationAddress;
+let endLocationAddress;
+let totalValue = 0
+let openSetIndex = 0
 
-function Spot(hor,ver){
+
+function Spot(hor, ver) {
     this.x = hor
     this.y = ver
-    this.edgeVals = [] ,
-    this.heuristic = getRndInteger(1,20)
+    this.edgeVals = []
+    this.heuristic = getRndInteger(1, 100)
     this.neighbours = []
 
-    this.addneighbours = function (maingrid) {
+    this.addEdgeVals = function (maingrid) {
+        if (hor < col - 1) {
+            this.edgeVals.push(getRndInteger(1, 100))
+        } else {
+            this.edgeVals.push(null);
+        }
+
+        if (hor < col - 1 && ver < row - 1) {
+            this.edgeVals.push(getRndInteger(1, 100))
+        } else {
+            this.edgeVals.push(null);
+        }
+
+        if (ver < row - 1) {
+            this.edgeVals.push(getRndInteger(1, 100))
+        } else {
+            this.edgeVals.push(null);
+        }
+    };
+    // [1,2,3]
+    // [right,diagnol,left]
+
+    this.addneighbours = function () {
         var hor = this.x;
         var ver = this.y;
         if (hor < col - 1) {
@@ -68,11 +109,11 @@ function Spot(hor,ver){
             this.neighbours.push(maingrid[hor + 1][ver + 1]);
         }
     };
-    
+
 }
 
 
-function setup(){
+function setup() {
     // adding spots
     for (let ver = 0; ver < 10; ver++) {
         for (let hor = 0; hor < 10; hor++) {
@@ -86,36 +127,77 @@ function setup(){
             maingrid[ver][hor].addneighbours(maingrid)
         }
     }
-    console.log(maingrid)
-    
+
+    // adding edge values
+    for (let ver = 0; ver < 10; ver++) {
+        for (let hor = 0; hor < 10; hor++) {
+            maingrid[ver][hor].addEdgeVals();
+        }
+    }
+
+    // console.log(maingrid)
+
     // function to find start and the end
     startAndEnd(sidegrid)
-
+    findPath(maingrid)
 
 
 }
 
 
 function startAndEnd(grid) {
-    let startLocation  = "A5"
+    let startLocation = "A5"
     let endLocation = "J9"
     for (let ver = 0; ver < 10; ver++) {
         for (let hor = 0; hor < 10; hor++) {
-            if(sidegrid[ver][hor] === startLocation){
-                console.log(ver,hor)
-            } 
+            if (sidegrid[ver][hor] === startLocation) {
+                startLocationAddress = maingrid[ver][hor]
+            }
         }
     }
     for (let ver = 0; ver < 10; ver++) {
         for (let hor = 0; hor < 10; hor++) {
-            if(sidegrid[ver][hor] === endLocation){
-                console.log(ver,hor)
-            } 
+            if (sidegrid[ver][hor] === endLocation) {
+                endLocationAddress = maingrid[ver][hor]
+            }
         }
     }
+    openSet.push(startLocationAddress)
 }
 
-console.log("meow")
+
+function findPath(grid) {
+    while (openSetIndex < 2) {
+        console.log(openSet[openSetIndex].edgeVals)
+        let lowest = findLowestVal(openSet[openSetIndex].edgeVals)
+        const totalValue = lowest + openSet[openSetIndex].heuristic
+        let valOfDirection = openSet[openSetIndex].edgeVals.indexOf(lowest)
+        closedSet.push(openSet[openSetIndex])
+        openSet = []
+
+        if (valOfDirection == 0) {
+            console.log(closedSet[openSetIndex].x, closedSet[openSetIndex].y)
+            openSet.push(maingrid[closedSet[openSetIndex].x + 1][closedSet[openSetIndex].y])
+        }
+        if (valOfDirection == 1) {
+            console.log(closedSet[openSetIndex].x, closedSet[openSetIndex].y)
+            openSet.push(maingrid[closedSet[openSetIndex].x + 1][closedSet[openSetIndex].y + 1])
+        }
+        if (valOfDirection == 2) {
+            console.log(closedSet[openSetIndex].x, closedSet[openSetIndex].y)
+            openSet.push(maingrid[closedSet[openSetIndex].x][closedSet[openSetIndex].y + 1])
+        }
+        openSetIndex++
+    }
+    console.log(closedSet)
+
+}
+
+
+function findLowestVal(arr, heuristicVal) {
+    return Math.min(...arr);
+}
+
 
 
 setup()
